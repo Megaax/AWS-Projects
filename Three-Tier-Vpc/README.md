@@ -29,12 +29,15 @@ private_data_subnet_cidrs = ["10.0.5.0/24", "10.0.6.0/24"]
 3. **Initialize the Terraform Configuration:**
 
 ```terraform init```
+
 4.**Apply the Configuration to Create the Infrastructure:**
 
 ```terraform apply```
+
 Type yes when prompted to confirm the execution.
 
 ## Clean up
+
 **To avoid incurring charges, you can destroy the created resources when they are no longer needed:**
 
 ```terraform destroy```
