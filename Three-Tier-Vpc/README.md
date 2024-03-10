@@ -13,7 +13,7 @@ This Terraform configuration creates a three-tier architecture in AWS, including
 
 1. **Clone the Repository:**
    ```bash
-   git clone [https://github.com/your-username/terraform-three-tier-vpc.git](https://github.com/Megaax/AWS-Projects/blob/main/Three-Tier-Vpc)
+   git clone https://github.com/Megaax/AWS-Projects/blob/main/Three-Tier-Vpc
 
 2. **Specify your variables in the variables.tfvars file:**
 region                  = "your-aws-region"
