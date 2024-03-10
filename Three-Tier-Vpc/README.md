@@ -16,23 +16,23 @@ This Terraform configuration creates a three-tier architecture in AWS, including
    git clone https://github.com/Megaax/AWS-Projects/blob/main/Three-Tier-Vpc
 
 2. **Specify your variables in the variables.tfvars file:**
-region                  = "your-aws-region"
+-region                  = "your-aws-region"
 
-vpc_cidr                = "10.0.0.0/16"
+-vpc_cidr                = "10.0.0.0/16"
 
-public_subnet_cidrs     = ["10.0.1.0/24", "10.0.2.0/24"]
+-public_subnet_cidrs     = ["10.0.1.0/24", "10.0.2.0/24"]
 
-private_app_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
+-private_app_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
 
-private_data_subnet_cidrs = ["10.0.5.0/24", "10.0.6.0/24"]
+-private_data_subnet_cidrs = ["10.0.5.0/24", "10.0.6.0/24"]
 
 3. **Initialize the Terraform Configuration:**
 
-```terraform init```
+- ```terraform init```
 
 4.**Apply the Configuration to Create the Infrastructure:**
 
-```terraform apply```
+- ```terraform apply```
 
 Type yes when prompted to confirm the execution.
 
@@ -40,7 +40,7 @@ Type yes when prompted to confirm the execution.
 
 **To avoid incurring charges, you can destroy the created resources when they are no longer needed:**
 
-```terraform destroy```
+- ```terraform destroy```
 
 ## Architecture Overview
 
