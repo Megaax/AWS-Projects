@@ -1,12 +1,10 @@
 provider "aws" {
-  region = var.region
-  #   access_key = "AKIAWT2X4LYLB7SGQ2EI"
-  #   secret_key = "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"
+  region  = var.region
   profile = "terraform-user"
 }
 
 module "vpc" {
-  source                       = "../modules/vpc"
+  source                       = "./modules/vpc"
   region                       = var.region
   project_name                 = var.project_name
   vpc_cidr                     = var.vpc_cidr
@@ -16,4 +14,9 @@ module "vpc" {
   private_app_subnet_az2_cidr  = var.private_app_subnet_az2_cidr
   private_data_subnet_az1_cidr = var.private_data_subnet_az1_cidr
   private_data_subnet_az2_cidr = var.private_data_subnet_az2_cidr
+}
+
+module "security_groups" {
+  source = "./modules/security-groups"
+  vpc_id = module.vpc.vpc_id
 }
