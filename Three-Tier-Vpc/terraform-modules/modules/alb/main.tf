@@ -1,67 +1,68 @@
-# # create application load balancer
-# resource "aws_lb" "application_load_balancer" {
-#   name               = "${var.project_name}-alb"
-#   internal           = false
-#   load_balancer_type = "application"
-#   security_groups    = []
-#   subnets            = []
-#   enable_deletion_protection = 
+# create application load balancer
+resource "aws_lb" "application_load_balancer" {
+  name                       = "${var.project_name}-alb"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [var.alb_security_group_id]
+  subnets                    = [var.public_subnet_az1_id, var.public_subnet_az2_id]
+  enable_deletion_protection = false
 
-#   tags   = {
-#     Name = "${}-alb"
-#   }
-# }
+  tags = {
+    Name = "${var.project_name}-alb"
+  }
+}
 
-# # create target group
-# resource "aws_lb_target_group" "alb_target_group" {
-#   name        = "${}-tg"
-#   target_type = 
-#   port        = 
-#   protocol    = 
-#   vpc_id      = 
+# create target group
+resource "aws_lb_target_group" "alb_target_group" {
+  name     = "${var.lb_target_group_name}-tg"
+  port     = var.lb_target_group_port
+  protocol = var.lb_target_group_protocol
+  vpc_id   = var.vpc_id
 
-#   health_check {
-#     enabled             = true
-#     interval            = 300
-#     path                = "/"
-#     timeout             = 60
-#     matcher             = 200
-#     healthy_threshold   = 5
-#     unhealthy_threshold = 5
-#   }
 
-#   lifecycle {
-#     create_before_destroy = 
-#   }
-# }
+  health_check {
+    enabled             = true
+    interval            = 300
+    port                = 8080
+    path                = "/login"
+    timeout             = 60
+    matcher             = 200
+    healthy_threshold   = 5
+    unhealthy_threshold = 5
+  }
 
-# # create a listener on port 80 with redirect action
-# resource "aws_lb_listener" "alb_http_listener" {
-#   load_balancer_arn = 
-#   port              = 
-#   protocol          = 
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
-#   default_action {
-#     type = "redirect"
+# create a listener on port 80 with redirect action
+resource "aws_lb_listener" "alb_http_listener" {
+  load_balancer_arn = aws_lb.application_load_balancer.arn
+  port              = 80
+  protocol          = "HTTP"
 
-#     redirect {
-#       port        = 443
-#       protocol    = "HTTPS"
-#       status_code = "HTTP_301"
-#     }
-#   }
-# }
+  default_action {
+    type = "redirect"
 
-# # create a listener on port 443 with forward action
+    redirect {
+      port        = 443
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+# create a listener on port 443 with forward action
 # resource "aws_lb_listener" "alb_https_listener" {
-#   load_balancer_arn  = 
-#   port               = 
-#   protocol           = 
-#   ssl_policy         = "ELBSecurityPolicy-2016-08"
-#   certificate_arn    = 
+#   load_balancer_arn = aws_lb.application_load_balancer.arn
+#   port              = 443
+#   protocol          = "HTTPS"
+#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+#   #   certificate_arn    = 
 
 #   default_action {
-#     type             = 
-#     target_group_arn = 
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.alb_target_group.arn
 #   }
 # }

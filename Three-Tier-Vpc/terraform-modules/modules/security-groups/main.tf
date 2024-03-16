@@ -32,27 +32,29 @@ resource "aws_security_group" "alb_security_group" {
   }
 }
 
-# create security group for the container
-resource "aws_security_group" "ecs_security_group" {
-  name        = "ecs security group"
-  description = "enable http/https access on port 80/443 via alb sg"
+
+
+resource "aws_security_group" "ec2_jenkins_security_group" {
+  name        = "ec2 jenkins security group"
+  description = "enable port 8080 for jenkins"
   vpc_id      = var.vpc_id
 
   ingress {
-    description     = "http access"
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb_security_group.id]
+    description = "Allow port 8080 to access jenkins"
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
   }
 
   ingress {
-    description     = "https access"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb_security_group.id]
+    description = "ssh access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
+
 
   egress {
     from_port   = 0
@@ -62,6 +64,6 @@ resource "aws_security_group" "ecs_security_group" {
   }
 
   tags = {
-    Name = "ecs security group"
+    Name = "ec2 jenkins security group"
   }
 }
